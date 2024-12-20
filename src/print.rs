@@ -2,7 +2,7 @@ use colored::*;
 use std::collections::HashMap;
 use std::io::{self, Write};
 
-// pub fn line(line_content = "-": &str) {
+// pub fn line(line_content = "-": &str) {x
 //     println!("{}", line_content);
 // }
 
@@ -37,12 +37,22 @@ pub fn list(list_content: HashMap<String, String>) {
     }
 }
 
-pub fn input_prompt(prompt: &str) {
-    print!("{}{} ", prompt, ">>".blink().yellow());
+pub fn input_prompt(prompt: &str, without_underline_prompt: Option<&str>) {
+    let without_underline_prompt = if let Some(prompt) = without_underline_prompt {
+        format!("{} ", prompt)
+    } else {
+        "".to_string()
+    };
+    print!("{} {}{} ", prompt.underline(), without_underline_prompt, ">>".blink().yellow());
     io::stdout().flush().unwrap();
 }
 
-pub fn overwrite_prompt(prompt: &str, input: &str) {
+pub fn overwrite_prompt(prompt: &str, without_underline_prompt: Option<&str>, input: &str) {
+    let without_underline_prompt = if let Some(prompt) = without_underline_prompt {
+        format!("{} ", prompt)
+    } else {
+        "".to_string()
+    };
     const ANSI_CLEAR: &str = "\x1B[A\r\x1B[2K";
-    println!("{}{}{} {}", ANSI_CLEAR, prompt, ">>".dimmed(), input.trim());
+    println!("{}{} {}{} {}", ANSI_CLEAR, prompt.underline(), without_underline_prompt, ">>".dimmed(), input.trim());
 }
