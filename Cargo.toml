@@ -1,0 +1,10 @@
+[package]
+name = "mk-noter"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+colored = "2.2.0"
+serde = {version = "1.0.216", features = ["derive"]}
+toml = "0.8.19"
+ureq = "2.12.1"

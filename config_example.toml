@@ -1,0 +1,17 @@
+[settings]
+cw.always_enable = false
+cw.default_content = "SUGOI CW"
+
+default_visibility = "Public"
+
+instances.default = "Main"
+
+[[instances]]
+name = "Main"
+address = "chpk.kur0den.net"
+token = "44Gq44KT44GL44KC44GG44GZ44Gj44GU44GE44OI44O844Kv44OzMQ=="
+
+[[instances]]
+name = "Sub"
+address = "幼女.art"
+token = "44Gq44KT44GL44KC44GG44GZ44Gj44GU44GE44OI44O844Kv44OzMQ=="
