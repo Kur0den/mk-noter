@@ -63,10 +63,10 @@ fn config_create() {
     loop {
 
         print::hint("インスタンスのアドレスは、chpk.kur0den.net のようなものです");
-        instance.address = input::read_line("インスタンスのアドレスを入力してください");
-        instance.token = input::read_line("ノート作成権限を付与したトークンを入力してください");
+        instance.address = input::read_line("インスタンスのアドレスを入力してください", false);
+        instance.token = input::read_line("ノート作成権限を付与したトークンを入力してください", false);
         print::hint("投稿先選択時に表示される名前になります");
-        instance.name = input::read_line("このプロファイルに設定する名前を入力してください");
+        instance.name = input::read_line("このプロファイルに設定する名前を入力してください", true);
 
         print::list(instance.to_readable_indexmap());
         if input::confirm("この内容でプロファイルを保存しますか?") {
@@ -79,7 +79,7 @@ fn config_create() {
     print::info("次に初期動作の設定を行います");
     let mut cw: CwSettings = CwSettings::default();
     loop {
-        cw.default_content = input::read_line("CW設定時にデフォルトで入力される注釈を入力してください");
+        cw.default_content = input::read_line("CW設定時にデフォルトで入力される注釈を入力してください", false);
         cw.always_enable = input::confirm("常にCWを有効にしますか?");
         let mut cw_hashmap = cw.to_readable_indexmap();
         if cw_hashmap.get("デフォルトで有効").unwrap() == "true" {
