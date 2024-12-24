@@ -1,6 +1,7 @@
 use colored::*;
-use std::collections::HashMap;
+use unicode_width::UnicodeWidthChar;
 use std::io::{self, Write};
+use indexmap::IndexMap;
 
 // pub fn line(line_content = "-": &str) {x
 //     println!("{}", line_content);
@@ -12,6 +13,10 @@ pub fn hint(content: &str) {
 
 pub fn info(content: &str) {
     println!("{} {}", "[Info]".cyan(), content);
+}
+
+pub fn success(content: &str) {
+    println!("{} {}", "[Success]".green(), content);
 }
 
 pub fn warning(content: &str) {
@@ -27,14 +32,40 @@ pub fn title(content: &str) {
     println!();
 }
 
-pub fn list(list_content: HashMap<String, String>) {
+pub fn list(list_content: IndexMap<String, String>) {
     // Keyの中から最大の文字数を取得
-    let max_key_length = list_content.keys().map(|key| key.len()).max().unwrap();
+    // let max_key_length = list_content.keys().map(|key| key.len()).max().unwrap();
+    let mut max_key_length = 0;
+    let mut key_length_vec: Vec<usize> = Vec::new();
+    // Keyをひとつづつ取り出して、最大文字数を取得
+    for key in list_content.keys(){
+        let mut count = 0;
+        for char in key.chars() {
+            match char.width() {
+                Some(width) => count += width,
+                None => count += 1,
+            }
+        }
+        key_length_vec.push(count);
+        if count > max_key_length {
+            max_key_length = count;
+        }
+    }
 
+    // 空白行
+    println!();
+    // valueの最大文字数を取得
+    let max_value_length = list_content.values().map(|value| value.len()).max().unwrap();
+    // max_key_length + 3(スペースと縦棒) + valueの最大数 + 2(余裕を持たせるため)の横線を表示
+    println!("{}", "=".repeat(max_key_length + 3 + max_value_length + 2));
     // Keyの最大文字数に合わせて左寄せで空白で埋める
     for (key, value) in list_content {
-        println!("{:<width$} | {}", key, value, width = max_key_length);
+        let space_width = max_key_length - key_length_vec.remove(0);
+        println!("{}{space} | {}", key, value, space = " ".repeat(space_width));
     }
+    // max_key_length + 3(スペースと縦棒) + valueの最大数 + 2(余裕を持たせるため)の横線を表示
+    println!("{}", "=".repeat(max_key_length + 3 + max_value_length + 2));
+    println!();
 }
 
 pub fn input_prompt(prompt: &str, without_underline_prompt: Option<&str>) {

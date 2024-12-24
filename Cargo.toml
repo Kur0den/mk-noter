@@ -5,6 +5,8 @@ edition = "2021"
 
 [dependencies]
 colored = "2.2.0"
+indexmap = "2.7.0"
 serde = {version = "1.0.216", features = ["derive"]}
 toml = "0.8.19"
+unicode-width = "0.2.0"
 ureq = "2.12.1"

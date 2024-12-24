@@ -1,8 +1,10 @@
 use serde::Deserialize;
-use std::{collections::HashMap, hash::Hash};
+use indexmap::IndexMap;
 
-pub trait ToHashMap {
-    fn to_hashmap(&self) -> HashMap<String, String>;
+
+// TODO: indexMap型で書き直し
+pub trait ToReadableIndexMap {
+    fn to_readable_indexmap(&self) -> IndexMap<String, String>;
 }
 
 #[derive(Deserialize, Default, Debug)]
@@ -23,6 +25,16 @@ pub struct CwSettings {
     pub always_enable: bool,
     pub default_content: String,
 }
+
+impl ToReadableIndexMap for CwSettings {
+    fn to_readable_indexmap(&self) -> IndexMap<String, String>{
+        let mut map = IndexMap::new();
+        map.insert("デフォルトで有効".to_string(), self.always_enable.clone().to_string());
+        map.insert("デフォルトの注釈".to_string(), self.default_content.clone());
+        return map;
+    }
+}
+
 
 #[derive(Deserialize, Debug)]
 pub enum Visibility {
@@ -45,12 +57,12 @@ pub struct Instance {
     pub token: String,
 }
 
-impl ToHashMap for Instance {
-    fn to_hashmap(&self) -> HashMap<String, String>{
-        let mut map = std::collections::HashMap::new();
-        map.insert("name".to_string(), self.name.clone());
-        map.insert("address".to_string(), self.address.clone());
-        map.insert("token".to_string(), self.token.clone());
+impl ToReadableIndexMap for Instance {
+    fn to_readable_indexmap(&self) -> IndexMap<String, String>{
+        let mut map = IndexMap::new();
+        map.insert("プロファイル名".to_string(), self.name.clone());
+        map.insert("アドレス".to_string(), self.address.clone());
+        map.insert("トークン".to_string(), self.token.clone());
         return map;
     }
 }
