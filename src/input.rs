@@ -5,20 +5,35 @@ use colored::*;
 use crate::print;
 
 
-pub fn read_line(prompt: &str, allow_empty: bool) -> String {
+pub fn read_line(prompt: &str, allow_empty: bool, default: Option<&str>) -> String {
     let mut input = String::new();
     loop {
         // inputの前にプロンプトを表示
-        print::input_prompt(prompt, None);
+        if default.is_some() {
+            print::input_prompt(prompt, Some(&format!("({})", default.unwrap()).dimmed().to_string()));
+        } else {
+            print::input_prompt(prompt, None);
+        }
         io::stdin()  // 標準入力を取得
         .read_line(&mut input)
         .expect("Failed to read line");
         // カーソルの点滅を削除
-        print::overwrite_prompt(prompt, None, &input);
+        if default.is_some() {
+            if input.trim().is_empty() {
+                print::overwrite_prompt(prompt, Some(&format!("({})", default.unwrap()).dimmed().to_string()), "");
+            } else {
+                print::overwrite_prompt(prompt, Some(&format!("({})", default.unwrap()).dimmed().to_string()), &input);
+            }
+        } else {
+            print::overwrite_prompt(prompt, None, &input);
+        }
         if !allow_empty && input.trim().is_empty() {
             print::warning("空入力は許容されていません");
             continue;
-        } else {
+        } else if input.trim().is_empty() && default.is_some(){
+            input = default.unwrap().to_string();
+            break;
+        }else{
             break;
         }
     }

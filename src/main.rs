@@ -2,7 +2,7 @@ pub mod config;
 pub mod input;
 pub mod print;
 
-use std::io::Read;
+use std::{default, io::Read};
 use std::fs::File;
 use config::{Config, CwSettings, Instance, ToReadableIndexMap};
 use colored::*;
@@ -63,10 +63,10 @@ fn config_create() {
     loop {
 
         print::hint("インスタンスのアドレスは、chpk.kur0den.net のようなものです");
-        instance.address = input::read_line("インスタンスのアドレスを入力してください", false);
-        instance.token = input::read_line("ノート作成権限を付与したトークンを入力してください", false);
+        instance.address = input::read_line("インスタンスのアドレスを入力してください", false, None);
+        instance.token = input::read_line("ノート作成権限を付与したトークンを入力してください", false, None);
         print::hint("投稿先選択時に表示される名前になります");
-        instance.name = input::read_line("このプロファイルに設定する名前を入力してください", true);
+        instance.name = input::read_line("このプロファイルに設定する名前を入力してください", true, Some(&instance.address));
 
         print::list(instance.to_readable_indexmap());
         if input::confirm("この内容でプロファイルを保存しますか?") {
@@ -79,7 +79,7 @@ fn config_create() {
     print::info("次に初期動作の設定を行います");
     let mut cw: CwSettings = CwSettings::default();
     loop {
-        cw.default_content = input::read_line("CW設定時にデフォルトで入力される注釈を入力してください", false);
+        cw.default_content = input::read_line("CW設定時にデフォルトで入力される注釈を入力してください", true, Some("こんてんとわーにんぐ"));
         cw.always_enable = input::confirm("常にCWを有効にしますか?");
         let mut cw_hashmap = cw.to_readable_indexmap();
         if cw_hashmap.get("デフォルトで有効").unwrap() == "true" {
