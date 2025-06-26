@@ -10,7 +10,7 @@ pub fn read_line(prompt: &str, allow_empty: bool, default: Option<&str>) -> Stri
     loop {
         // inputの前にプロンプトを表示
         if default.is_some() {
-            print::input_prompt(prompt, Some(&format!("({})", default.unwrap()).dimmed().to_string()));
+            print::input_prompt(prompt, Some(&format!("(デフォルト: {})", default.unwrap()).dimmed().to_string()));
         } else {
             print::input_prompt(prompt, None);
         }
@@ -20,9 +20,9 @@ pub fn read_line(prompt: &str, allow_empty: bool, default: Option<&str>) -> Stri
         // カーソルの点滅を削除
         if default.is_some() {
             if input.trim().is_empty() {
-                print::overwrite_prompt(prompt, Some(&format!("({})", default.unwrap()).dimmed().to_string()), "");
+                print::overwrite_prompt(prompt, Some(&format!("(デフォルト: {})", default.unwrap()).dimmed().to_string()), "");
             } else {
-                print::overwrite_prompt(prompt, Some(&format!("({})", default.unwrap()).dimmed().to_string()), &input);
+                print::overwrite_prompt(prompt, Some(&format!("(デフォルト: {})", default.unwrap()).dimmed().to_string()), &input);
             }
         } else {
             print::overwrite_prompt(prompt, None, &input);

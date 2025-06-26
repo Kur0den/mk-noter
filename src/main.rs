@@ -94,4 +94,8 @@ fn config_create() {
             print::info("再登録を行います");
         }
     }
+    config.settings.cw = cw;
+
+
+
 }
